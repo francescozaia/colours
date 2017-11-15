@@ -1,0 +1,183 @@
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css?family=Titillium+Web:300" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dot/1.1.2/doT.min.js" integrity="sha256-XEpvFiod8Oc0Md8Bfv4/D5joMS7TEhzg6xKvW50P8Sc=" crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="content">Yo</div>
+
+<input class="colour-range" id="colour--range" type="range" min="0" max="360" step="1" oninput="showVal(this.value)" onchange="showVal(this.value)">
+<div class="yo"></div>
+<div id="x"></div>
+<style>
+  body {
+    font-family: 'Titillium Web', sans-serif;
+  }
+  .yo {
+    width: 100%;
+    height: 3px;
+    background: -webkit-linear-gradient(left, hsla(0, 100%, 50%, 1),hsla(10, 100%, 50%, 1),hsla(20, 100%, 50%, 1),hsla(30, 100%, 50%, 1),hsla(40, 100%, 50%, 1),hsla(50, 100%, 50%, 1),hsla(60, 100%, 50%, 1),hsla(70, 100%, 50%, 1),hsla(80, 100%, 50%, 1),hsla(90, 100%, 50%, 1),hsla(100, 100%, 50%, 1),hsla(110, 100%, 50%, 1),hsla(120, 100%, 50%, 1),hsla(130, 100%, 50%, 1),hsla(140, 100%, 50%, 1),hsla(150, 100%, 50%, 1),hsla(160, 100%, 50%, 1),hsla(170, 100%, 50%, 1),hsla(180, 100%, 50%, 1),hsla(190, 100%, 50%, 1),hsla(200, 100%, 50%, 1),hsla(210, 100%, 50%, 1),hsla(220, 100%, 50%, 1),hsla(230, 100%, 50%, 1),hsla(240, 100%, 50%, 1),hsla(250, 100%, 50%, 1),hsla(260, 100%, 50%, 1),hsla(270, 100%, 50%, 1),hsla(280, 100%, 50%, 1),hsla(290, 100%, 50%, 1),hsla(300, 100%, 50%, 1),hsla(310, 100%, 50%, 1),hsla(320, 100%, 50%, 1),hsla(330, 100%, 50%, 1),hsla(340, 100%, 50%, 1),hsla(350, 100%, 50%, 1),hsla(360, 100%, 50%, 1));; background: -moz-linear-gradient(left, hsla(0, 100%, 50%, 1),hsla(10, 100%, 50%, 1),hsla(20, 100%, 50%, 1),hsla(30, 100%, 50%, 1),hsla(40, 100%, 50%, 1),hsla(50, 100%, 50%, 1),hsla(60, 100%, 50%, 1),hsla(70, 100%, 50%, 1),hsla(80, 100%, 50%, 1),hsla(90, 100%, 50%, 1),hsla(100, 100%, 50%, 1),hsla(110, 100%, 50%, 1),hsla(120, 100%, 50%, 1),hsla(130, 100%, 50%, 1),hsla(140, 100%, 50%, 1),hsla(150, 100%, 50%, 1),hsla(160, 100%, 50%, 1),hsla(170, 100%, 50%, 1),hsla(180, 100%, 50%, 1),hsla(190, 100%, 50%, 1),hsla(200, 100%, 50%, 1),hsla(210, 100%, 50%, 1),hsla(220, 100%, 50%, 1),hsla(230, 100%, 50%, 1),hsla(240, 100%, 50%, 1),hsla(250, 100%, 50%, 1),hsla(260, 100%, 50%, 1),hsla(270, 100%, 50%, 1),hsla(280, 100%, 50%, 1),hsla(290, 100%, 50%, 1),hsla(300, 100%, 50%, 1),hsla(310, 100%, 50%, 1),hsla(320, 100%, 50%, 1),hsla(330, 100%, 50%, 1),hsla(340, 100%, 50%, 1),hsla(350, 100%, 50%, 1),hsla(360, 100%, 50%, 1));
+  }
+  .colour-range {
+    width: 100%;
+    margin: 8px 0;
+  }
+  .colours--col {
+    display: inline-block;
+  }
+  .colours--box {
+    width: 160px;
+    display: block;
+    border: 1px solid #FFF;
+    text-align: right;
+    padding: 8px;
+    line-height: 24px;
+    color: #FFF;
+    font-size: 12px;
+  }
+  .row {
+    margin-right: -48px;
+    margin-left: -48px;
+  }
+  .row > .col,
+  .row > [class*="col-"] {
+    padding-right: 48px;
+    padding-left: 48px;
+  }
+  .h {visibility:hidden}
+  .colours--list__tint li:first-child {
+    margin-bottom: 32px;
+  }
+
+  .colours--list__tint li:first-child .h {visibility:visible}
+</style>
+
+<script>
+
+  function HSVtoRGB(_h, _s, _v) {
+      var h = _h/360;
+      var s = _s/100;
+      var v = _v/100;
+      var r, g, b, i, f, p, q, t;
+      if (arguments.length === 1) {
+          s = h.s, v = h.v, h = h.h;
+      }
+      i = Math.floor(h * 6);
+      f = h * 6 - i;
+      p = v * (1 - s);
+      q = v * (1 - f * s);
+      t = v * (1 - (1 - f) * s);
+      switch (i % 6) {
+          case 0: r = v, g = t, b = p; break;
+          case 1: r = q, g = v, b = p; break;
+          case 2: r = p, g = v, b = t; break;
+          case 3: r = p, g = q, b = v; break;
+          case 4: r = t, g = p, b = v; break;
+          case 5: r = v, g = p, b = q; break;
+      }
+      // return Math.round(r * 255) + "," + Math.round(g * 255) + "," + Math.round(b * 255);
+      return {
+          rgb: {
+              r: Math.round(r * 255),
+              g: Math.round(g * 255),
+              b: Math.round(b * 255)
+          },
+          hsv: {
+              h:_h,
+              s:_s,
+              v:_v
+          }
+      };
+  }
+
+  //alert(HSVtoRGB(210, 10, 100));
+</script>
+<script id="colours-template" type="text/x-dot-template">
+  <div class="colours--col">
+    <ul class="colours--list colours--list__tint">
+      {{~it.tintArray :value:index}}
+      <li class="colours--box" style="background-color:rgb({{=value.rgb.r}}, {{=value.rgb.g}}, {{=value.rgb.b}})"><span class="h">base colour: {{=value.hsv.h}}, </span>{{=value.hsv.s}}, {{=value.hsv.v}}</li>
+      {{~}}
+    </ul>
+  </div>
+  <div class="colours--col">
+    <ul class="colours--list colours--list__tone">
+      {{~it.toneArray :value:index}}
+      <li class="colours--box" style="background-color:rgb({{=value.rgb.r}}, {{=value.rgb.g}}, {{=value.rgb.b}})">{{=value.hsv.s}}, {{=value.hsv.v}}</li>
+      {{~}}
+    </ul>
+  </div>
+  <div class="colours--col">
+    <ul class="colours--list colours--list__lightness">
+      {{~it.lightnessArray :value:index}}
+      <li class="colours--box" style="background-color:rgb({{=value.rgb.r}}, {{=value.rgb.g}}, {{=value.rgb.b}})">{{=value.hsv.s}}, {{=value.hsv.v}}</li>
+      {{~}}
+    </ul>
+  </div>
+</script>
+<script>
+  var initialValue = 210
+    var data = generateData(initialValue);
+    document.getElementById("colour--range").value = initialValue
+    document.getElementById("x").innerHTML = initialValue
+    function generateData(h) {
+        return {
+            tintArray:[
+                HSVtoRGB(h, 100, 80),
+                HSVtoRGB(h, 5, 99),
+                HSVtoRGB(h, 15, 96),
+                HSVtoRGB(h, 30, 93),
+                HSVtoRGB(h, 45, 90),
+                HSVtoRGB(h, 60, 87),
+                HSVtoRGB(h, 75, 84),
+                HSVtoRGB(h, 100, 80),
+                HSVtoRGB(h, 100, 70),
+                HSVtoRGB(h, 100, 60),
+                HSVtoRGB(h, 100, 50),
+                HSVtoRGB(h, 100, 40),
+                HSVtoRGB(h, 100, 30),
+                HSVtoRGB(h, 100, 20)
+            ],
+                toneArray: [
+                HSVtoRGB(h, 100, 80),
+                HSVtoRGB(h, 90, 70),
+                HSVtoRGB(h, 80, 60),
+                HSVtoRGB(h, 70, 50),
+                HSVtoRGB(h, 60, 40),
+                HSVtoRGB(h, 50, 30),
+                HSVtoRGB(h, 40, 20)
+            ],
+                lightnessArray: [
+                HSVtoRGB(h, 10, 100),
+                HSVtoRGB(h, 20, 100),
+                HSVtoRGB(h, 30, 100),
+                HSVtoRGB(h, 40, 100),
+                HSVtoRGB(h, 50, 100),
+                HSVtoRGB(h, 60, 100),
+                HSVtoRGB(h, 70, 100),
+                HSVtoRGB(h, 80, 100),
+                HSVtoRGB(h, 90, 100),
+                HSVtoRGB(h, 100, 100),
+                HSVtoRGB(h, 100, 90),
+                HSVtoRGB(h, 100, 80)
+            ]
+        }
+    }
+
+    function showVal(val){
+        data = generateData(val);
+        document.getElementById('content').innerHTML = doT.template(document.getElementById('colours-template').text)(data);
+        document.getElementById('x').innerHTML = val
+    }
+    /*var _s = 5;
+    var _v = 99;
+    for (var i = 0; i < 7; i ++) {
+        data.coloursArray.push(HSVtoRGB(h, _s, _v));
+        _s +=15;
+        _v -=3;
+    }*/
+    document.getElementById('content').innerHTML = doT.template(document.getElementById('colours-template').text)(data);
+</script>
+</body>
+</html>
