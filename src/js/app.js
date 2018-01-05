@@ -1,3 +1,72 @@
+import '../sass/main.sass'
+
+var Vibrant = require('node-vibrant');
+var doT = require("dot");
+
+var imageLoader = document.getElementById('imageLoader');
+imageLoader.addEventListener('change', handleImage, false);
+var canvas = document.getElementById('imageCanvas');
+var context = canvas.getContext('2d');
+var padding = 0;
+var width = 400;
+
+function getHue(red, green, blue) {
+
+    var min = Math.min(Math.min(red, green), blue);
+    var max = Math.max(Math.max(red, green), blue);
+
+    var hue = 0;
+    if (max == red) {
+        hue = (green - blue) / (max - min);
+
+    } else if (max == green) {
+        hue = 2 + (blue - red) / (max - min);
+
+    } else {
+        hue = 4 + (red - green) / (max - min);
+    }
+
+    hue = hue * 60;
+    if (hue < 0) hue = hue + 360;
+
+    return Math.round(hue);
+}
+
+function getMousePos(canvas, evt) {
+    var rect = canvas.getBoundingClientRect();
+    return {
+        x: Math.round(evt.clientX - rect.left),
+        y: Math.round(evt.clientY - rect.top)
+    };
+}
+function handleImage(e){
+    var reader = new FileReader();
+    reader.onload = function(event){
+        var img = new Image();
+        img.onload = function(){
+            canvas.width = 300;
+            canvas.height = 300 * img.height / img.width;
+            context.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+
+            var imageData = context.getImageData(0, 0, img.width, img.height);
+
+            var image = new Image();
+            image.src = canvas.toDataURL("image/png");
+            Vibrant.from(image).getPalette().then(function(palette) {
+                document.getElementById('vibrant').innerHTML = doT.template(document.getElementById('vibrant-template').text)(palette);
+            });
+        }
+        img.src = event.target.result;
+    }
+    reader.readAsDataURL(e.target.files[0]);
+}
+
+
+
+
+
+/* CT */
 var initialValue = 210
 var data = generateData(initialValue);
 document.getElementById("colour--range").value = initialValue
@@ -25,7 +94,6 @@ function HSVtoRGB(_h, _s, _v) {
         case 4: r = t, g = p, b = v; break;
         case 5: r = v, g = p, b = q; break;
     }
-    // return Math.round(r * 255) + "," + Math.round(g * 255) + "," + Math.round(b * 255);
     return {
         rgb: {
             r: Math.round(r * 255),
@@ -90,10 +158,5 @@ function showVal(val){
     document.getElementById('x').innerHTML = val
     document.getElementById("colour--range").value = val
 }
-/*var _s = 5;
-var _v = 99;
-for (var i = 0; i < 7; i ++) {
-    data.coloursArray.push(HSVtoRGB(h, _s, _v));
-    _s +=15;
-    _v -=3;
-}*/
+
+document.getElementById('content').innerHTML = doT.template(document.getElementById('colours-template').text)(data);

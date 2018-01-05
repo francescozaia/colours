@@ -1,12 +1,10 @@
 <html>
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://fonts.googleapis.com/css?family=Titillium+Web:300" rel="stylesheet">
-  <link href="css/main.css" rel="stylesheet">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/dot/1.1.2/doT.min.js" integrity="sha256-XEpvFiod8Oc0Md8Bfv4/D5joMS7TEhzg6xKvW50P8Sc=" crossorigin="anonymous"></script>
-</head>
+  <meta name="viewport" content="width=device-width, initial-scale=1"></head>
 <body>
 <div id="content"></div>
+<div id="vibrant"></div>
+<div id="rgbaster"></div>
 
 <input class="colour-range" id="colour--range" type="range" min="0" max="360" step="1" oninput="showVal(this.value)" onchange="showVal(this.value)">
 <div class="yo"></div>
@@ -16,9 +14,19 @@
 <input type="file" id="imageLoader" name="imageLoader"/>
 <canvas id="imageCanvas"></canvas>
 
-<style>
 
-</style>
+<script id="rgbaster-template" type="text/x-dot-template">
+  {{~it :value:index}}
+  <div style="background-color:{{=value.name}}">{{=value.count}}!</div>
+  {{~}}
+</script>
+
+<script id="vibrant-template" type="text/x-dot-template">
+  {{ for(var prop in it) { }}
+  <div style="background-color:rgb({{=it[prop]._rgb[0]}}, {{=it[prop]._rgb[1]}}, {{=it[prop]._rgb[2]}})">{{=prop}}</div>
+  {{ } }}
+</script>
+
 <script id="colours-template" type="text/x-dot-template">
   <div class="colours--col">
     <ul class="colours--list colours--list__tint">
@@ -43,10 +51,7 @@
   </div>
 </script>
 
-<script src="js/imageload.js"></script>
-<script src="js/colourtransform.js"></script>
-<script>
-    document.getElementById('content').innerHTML = doT.template(document.getElementById('colours-template').text)(data);
-</script>
+<script src="dist/app.bundle.js"></script>
+
 </body>
 </html>
