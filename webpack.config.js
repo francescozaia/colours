@@ -17,11 +17,15 @@ module.exports = {
             }, {
                 loader: "sass-loader"
             }]
+        }, {
+            test: /\.css$/,
+            loader: 'style-loader!css-loader'
         }]
     },
     plugins: [
         new UglifyJsPlugin({
-            parallel: 4
+            parallel: 4,
+            sourceMap: true
         })
     ]
 };

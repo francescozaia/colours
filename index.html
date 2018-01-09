@@ -1,18 +1,73 @@
 <html>
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1"></head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {padding-top: 5rem}
+    .navbar-nav-svg {display: inline-block;width: 1rem;height: 1rem}
+  </style>
+</head>
 <body>
-<div id="content"></div>
-<div id="vibrant"></div>
-<div id="rgbaster"></div>
 
-<input class="colour-range" id="colour--range" type="range" min="0" max="360" step="1" oninput="showVal(this.value)" onchange="showVal(this.value)">
-<div class="yo"></div>
-<div id="x"></div>
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+  <a class="navbar-brand" href="#">Colours!</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
 
-<label>Image File:</label><br/>
-<input type="file" id="imageLoader" name="imageLoader"/>
-<canvas id="imageCanvas"></canvas>
+  <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="#colurs-variations">Scegli il colore</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#colurs-image">Carica un'immagine</a>
+      </li>
+    </ul>
+    <ul class="navbar-nav my-2 my-lg-0">
+      <li class="nav-item">
+        <a class="nav-link p-1" href="#" target="_blank" rel="noopener" aria-label="GitHub">
+          <svg class="navbar-nav-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 499.36" focusable="false"><title>GitHub</title><path d="M256 0C114.64 0 0 114.61 0 256c0 113.09 73.34 209 175.08 242.9 12.8 2.35 17.47-5.56 17.47-12.34 0-6.08-.22-22.18-.35-43.54-71.2 15.49-86.2-34.34-86.2-34.34-11.64-29.57-28.42-37.45-28.42-37.45-23.27-15.84 1.73-15.55 1.73-15.55 25.69 1.81 39.21 26.38 39.21 26.38 22.84 39.12 59.92 27.82 74.5 21.27 2.33-16.54 8.94-27.82 16.25-34.22-56.84-6.43-116.6-28.43-116.6-126.49 0-27.95 10-50.8 26.35-68.69-2.63-6.48-11.42-32.5 2.51-67.75 0 0 21.49-6.88 70.4 26.24a242.65 242.65 0 0 1 128.18 0c48.87-33.13 70.33-26.24 70.33-26.24 14 35.25 5.18 61.27 2.55 67.75 16.41 17.9 26.31 40.75 26.31 68.69 0 98.35-59.85 120-116.88 126.32 9.19 7.9 17.38 23.53 17.38 47.41 0 34.22-.31 61.83-.31 70.23 0 6.85 4.61 14.81 17.6 12.31C438.72 464.97 512 369.08 512 256.02 512 114.62 397.37 0 256 0z" fill="currentColor" fill-rule="evenodd"></path></svg>
+        </a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<main role="main" class="container">
+
+  <div id="colurs-variations" class="main-template">
+    <h1>Scegli il colore</h1>
+    <p class="lead">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo.</p>
+
+    <input class="colour-range" id="colour-range" type="range" min="0" max="360" step="1">
+    <div class="colour-rainbow"></div>
+    <div id="color-value"></div>
+
+    <h1>Risultati:</h1>
+    <div id="content"></div>
+    <div id="rgbaster"></div>
+
+
+  </div>
+  <div id="colurs-image" class="main-template">
+    <h1>Carica un'immagine</h1>
+    <p class="lead">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo.</p>
+    <input type="file" id="imageLoader" name="imageLoader"/><br/>
+    <div id="vibrant" class="row"></div>
+    <canvas id="imageCanvas" style="display: none"></canvas>
+  </div>
+
+</main><!-- /.container -->
+
+<footer class="footer text-center">
+  <hr/>
+  <p onclick="">Colours is a tool built by TD.</p>
+  <p>
+    <a href="#">Back to top</a>
+  </p>
+</footer>
+
+
 
 
 <script id="rgbaster-template" type="text/x-dot-template">
@@ -23,7 +78,13 @@
 
 <script id="vibrant-template" type="text/x-dot-template">
   {{ for(var prop in it) { }}
-  <div style="background-color:rgb({{=it[prop]._rgb[0]}}, {{=it[prop]._rgb[1]}}, {{=it[prop]._rgb[2]}})">{{=prop}}</div>
+    {{##def.propIT:
+      {{? prop === 'Vibrant' }}Vivace{{?? prop === 'Muted' }}Smorzato
+      {{?? prop === 'DarkVibrant' }}Vivace Scuro{{?? prop === 'DarkMuted' }}Smorzato Scuro
+      {{?? prop === 'LightVibrant' }}Vivace Chiaro{{?? prop === 'LightMuted' }}Smorzato Chiaro
+      {{?}}
+    #}}
+  <div class="col-sm-4" style="background-color:rgb({{=it[prop]._rgb[0]}}, {{=it[prop]._rgb[1]}}, {{=it[prop]._rgb[2]}})">{{#def.propIT}}</div>
   {{ } }}
 </script>
 
@@ -50,7 +111,8 @@
     </ul>
   </div>
 </script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="dist/app.bundle.js"></script>
 
 </body>
