@@ -27,8 +27,8 @@
     "webpack": "^3.10.0"
   },
   "dependencies": {
+    "bootstrap-italia": "git+https://git@github.com/italia/bootstrap-italia.git",
     "dot": "^1.1.2",
-    "node-vibrant": "^3.0.0",
-    "bootstrap-italia": "git@github.com:italia/bootstrap-italia.git"
+    "node-vibrant": "^3.0.0"
   }
 }
